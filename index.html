@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart BMS Dashboard</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0b0b0b;
+    color: white;
+    text-align: center;
+    margin-top: 40px;
+  }
+  h1 {
+    color: #00ffcc;
+    font-size: 2em;
+  }
+  .card {
+    display: inline-block;
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 40px #00ffcc;
+    margin-top: 30px;
+    width: 450px;
+  }
+  .value {
+    color: #00ffcc;
+    font-weight: bold;
+  }
+  .status {
+    font-size: 1.2em;
+    margin-top: 20px;
+  }
+  .reason {
+    font-size: 0.9em;
+    color: #ffaa00;
+  }
+  hr {
+    border: 1px solid #00ffcc;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔋 Smart Battery Management System Dashboard</h1>
+
+<div class="card">
+  <p>Voltage: <span class="value" id="voltage">--</span> V</p>
+  <p>Current: <span class="value" id="current">--</span> A</p>
+  <p>Power: <span class="value" id="power">--</span> W</p>
+  <p>Temperature: <span class="value" id="temperature">--</span> °C</p>
+  <hr>
+  <p>State of Charge (SOC): <span class="value" id="soc">--</span> %</p>
+  <p>State of Health (SOH): <span class="value" id="soh">--</span> %</p>
+  <p>Battery Cycles: <span class="value" id="cycles">--</span></p>
+  <hr>
+  <p>Last Update: <span class="value" id="last_update">--</span></p>
+  <p class="status" id="status">Loading...</p>
+  <p class="reason" id="reason"></p>
+</div>
+
+<script>
+async function fetchData() {
+  const res = await fetch('/latest');
+  const data = await res.json();
+
+  document.getElementById('voltage').textContent = data.voltage;
+  document.getElementById('current').textContent = data.current;
+  document.getElementById('power').textContent = data.power;
+  document.getElementById('temperature').textContent = data.temperature;
+  document.getElementById('soc').textContent = data.soc;
+  document.getElementById('soh').textContent = data.soh;
+  document.getElementById('cycles').textContent = data.cycles;
+  document.getElementById('last_update').textContent = data.last_update;
+  document.getElementById('status').textContent = data.status;
+  document.getElementById('reason').textContent = data.reason || "";
+}
+setInterval(fetchData, 2000);
+fetchData();
+</script>
+
+</body>
+</html>
